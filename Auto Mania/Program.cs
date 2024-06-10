@@ -29,7 +29,7 @@ class AutoMania
             { "key-width", "130" }, // Width of keys
             { "key-height", "130" }, // Height of keys, can be set to 0
             { "centered", "yes" }, // OR start-x. If keys are in center of window horizontally
-            { "start-x", "105" }, // OR centered. X position of center of first key
+            // { "start-x", "105" }, // OR centered. X position of center of first key
             { "log-fps", "yes" }, // Log FPS
             { "log-keys", "yes" }, // OR log-key-presses AND log-key-releases. Log keys
             // { "log-key-presses", "yes" }, // OR log-keys. Log key presses
