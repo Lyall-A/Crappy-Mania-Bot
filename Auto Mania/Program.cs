@@ -138,7 +138,7 @@ class AutoMania
                             int bottomIndex = bottomY * stride + x * 4;
 
                             Color topCurrentColor = Color.FromArgb(p[topIndex + 3], p[topIndex + 2], p[topIndex + 1], p[topIndex]);
-                            Color bottomCurrentColor = Color.FromArgb(p[bottomIndex + 3], p[bottomIndex + 2], p[bottomIndex + 1], p[bottomIndex]);
+                            Color bottomCurrentColor = bottomY > 0 ? Color.FromArgb(p[bottomIndex + 3], p[bottomIndex + 2], p[bottomIndex + 1], p[bottomIndex]) : topCurrentColor;
 
                             if (delay > 0) Thread.Sleep(delay);
 
