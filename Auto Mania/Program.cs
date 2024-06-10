@@ -107,7 +107,7 @@ class AutoMania
         if (windowOffsetY != 0) keyYTop += windowOffsetY;
         for (int i = 0; i < keyCount; i++)
         {
-            parsedColors[i] = ColorTranslator.FromHtml(colors.Length > 0 ? colors[i] : color);
+            parsedColors[i] = ColorTranslator.FromHtml(color != "" ? color : colors[i]);
         }
 
         int screenshotWidth = keyWidth * (keyCount - 1) + 1;
