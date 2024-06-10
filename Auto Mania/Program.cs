@@ -16,20 +16,27 @@ class AutoMania
         Dictionary<string, string> args = new Dictionary<string, string>
         {
             // Default args
-            { "keycount", "4" },
-            { "keybinds", "d,f,j,k" },
-            { "width", "1920" },
-            { "height", "1080" },
-            { "window-offset-x", "0" },
-            { "window-offset-y", "0" },
-            { "key-y-bottom", "115" }, // OR key-y-top.
-            //{ "color", "#C8C8C8" }, // OR colors
-            { "colors", "#C8C8C8,#95A7FC,#95A7FC,#C8C8C8" }, // OR color
-            { "key-width", "130" },
-            { "key-height", "130" },
-            { "centered", "yes" }, // OR start-x. start-x = (width / 2) - (x-offset * (key-count / 2)) + (x-offset / 2)
-            { "log-fps", "yes" },
-            { "log-keys", "yes" }, // OR log-key-presses OR/AND log-key-releases
+            { "keycount", "4" }, // How many keys
+            { "keybinds", "d,f,j,k" }, // Array of keybinds split by ','
+            { "width", "1920" }, // Screen width
+            { "height", "1080" }, // Screen height
+            { "window-offset-x", "0" }, // Window offset X
+            { "window-offset-y", "0" }, // Window offset Y
+            { "key-y-bottom", "115" }, // OR key-y-top. Y position of the keys from bottom, recommended to be the bottom of keys
+            // { "key-y-top", "965" }, // OR key-y-bottom. Y position of the keys from top, recommended to be the bottom of keys
+            //{ "color", "#C8C8C8" }, // OR colors. Color of all keys
+            { "colors", "#C8C8C8,#95A7FC,#95A7FC,#C8C8C8" }, // OR color. Array of keys split by ','
+            { "key-width", "130" }, // Width of keys
+            { "key-height", "130" }, // Height of keys, can be set to 0
+            { "centered", "yes" }, // OR start-x. If keys are in center of window horizontally
+            { "start-x", "105" }, // OR centered. X position of center of first key
+            { "log-fps", "yes" }, // Log FPS
+            { "log-keys", "yes" }, // OR log-key-presses AND log-key-releases. Log keys
+            // { "log-key-presses", "yes" }, // OR log-keys. Log key presses
+            // { "log-key-releases", "yes" }, // OR log-keys. Log key releases
+            // { "key-press-delay", "15" }, // Add delay before pressing key
+            // { "key-release-delay", "1" }, // Add delay before releasing key
+            // { "delay", "1" }, // Add delay before checking keys
         };
 
         // Get args
@@ -52,6 +59,9 @@ class AutoMania
         int windowOffsetY = 0;
         int keyYBottom = 0;
         int keyYTop = 0;
+        int keyPressDelay = 0;
+        int keyReleaseDelay = 0;
+        int delay = 0;
         string color = "";
         string[] colors = new string[0];
         int keyWidth = 0;
@@ -72,6 +82,9 @@ class AutoMania
         if (args.ContainsKey("window-offset-y")) windowOffsetY = ArgInt(args["window-offset-y"]);
         if (args.ContainsKey("key-y-bottom")) keyYBottom = ArgInt(args["key-y-bottom"]);
         if (args.ContainsKey("key-y-top")) keyYTop = ArgInt(args["key-y-top"]);
+        if (args.ContainsKey("key-press-delay")) keyPressDelay = ArgInt(args["key-press-delay"]);
+        if (args.ContainsKey("key-release-delay")) keyReleaseDelay = ArgInt(args["key-release-delay"]);
+        if (args.ContainsKey("delay")) delay = ArgInt(args["delay"]);
         if (args.ContainsKey("color")) color = args["color"];
         if (args.ContainsKey("colors")) colors = args["colors"].Split(",");
         if (args.ContainsKey("key-width")) keyWidth = ArgInt(args["key-width"]);
@@ -127,8 +140,11 @@ class AutoMania
                             Color topCurrentColor = Color.FromArgb(p[topIndex + 3], p[topIndex + 2], p[topIndex + 1], p[topIndex]);
                             Color bottomCurrentColor = Color.FromArgb(p[bottomIndex + 3], p[bottomIndex + 2], p[bottomIndex + 1], p[bottomIndex]);
 
+                            if (delay > 0) Thread.Sleep(delay);
+
                             if (bottomCurrentColor.ToArgb() == parsedColors[keyIndex].ToArgb() && !pressedKeys[keyIndex])
                             {
+                                if (keyPressDelay > 0) Thread.Sleep(keyPressDelay);
                                 pressedKeys[keyIndex] = true;
                                 PressKeys(keybinds[keyIndex]);
                                 if (logKeys || logKeyPresses) Console.WriteLine($"Key {keyIndex + 1} ({keybinds[keyIndex]}): Pressed");
@@ -137,6 +153,7 @@ class AutoMania
 
                             if (topCurrentColor.ToArgb() != parsedColors[keyIndex].ToArgb() && pressedKeys[keyIndex])
                             {
+                                if (keyReleaseDelay > 0) Thread.Sleep(keyReleaseDelay);
                                 pressedKeys[keyIndex] = false;
                                 ReleaseKeys(keybinds[keyIndex]);
                                 if (logKeys || logKeyReleases) Console.WriteLine($"Key {keyIndex + 1} ({keybinds[keyIndex]}): Released");
