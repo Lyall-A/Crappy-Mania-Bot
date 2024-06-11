@@ -4,4 +4,7 @@ skin is modified version of [rosie](https://osu.ppy.sh/community/forums/topics/1
 
 gui ver maybe soon
 
+rush e wow
+https://www.youtube.com/watch?v=awHF5ABwHjA
+
 https://github.com/Lyall-A/Crappy-Mania-Bot/assets/58636255/d2182dbe-c585-442c-b092-cbac36e0473f
